@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>competitive-intel-to-html — AI-методология разведки рынка</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper: #F5F0E8;
+    --paper-dark: #EDE7D6;
+    --ink: #1A1208;
+    --ink-soft: #4A3F2A;
+    --orange: #FF6B00;
+    --orange-bg: #FFF3E8;
+    --green: #2D6A4F;
+    --blue: #1E3A8A;
+    --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: var(--grain);
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(32px, 5vw, 80px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,107,0,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--orange);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    width: fit-content;
+    margin-bottom: 40px;
+  }
+
+  .hero-eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.45);
+    margin-bottom: 20px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(40px, 6vw, 88px);
+    line-height: 1.05;
+    color: var(--paper);
+    margin-bottom: 28px;
+    max-width: 900px;
+  }
+
+  .hero-title em { font-style: italic; color: var(--orange); }
+
+  .hero-sub {
+    font-size: clamp(15px, 1.5vw, 18px);
+    color: rgba(245,240,232,0.6);
+    max-width: 560px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+  }
+
+  .hero-cta-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--orange);
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245,240,232,0.1);
+    color: var(--paper);
+    font-weight: 500;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid rgba(245,240,232,0.2);
+    transition: background 0.15s;
+  }
+  .btn-ghost:hover { background: rgba(245,240,232,0.16); }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 36px;
+    font-style: italic;
+    color: var(--orange);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: rgba(245,240,232,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  /* ── CONTAINER ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 60px);
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-wrap {
+    padding: 80px 0;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 12px;
+  }
+
+  .section-heading {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(28px, 3.5vw, 48px);
+    line-height: 1.15;
+    margin-bottom: 20px;
+    max-width: 700px;
+  }
+
+  .section-heading em { font-style: italic; color: var(--orange); }
+
+  .section-body {
+    font-size: 16px;
+    color: var(--ink-soft);
+    max-width: 640px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  /* ── DIVIDER ── */
+  hr.div { border: none; border-top: 1px solid var(--paper-dark); margin: 0; }
+
+  /* ── WHAT YOU GET ── */
+  .deliverables {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 0;
+  }
+
+  .deliv-card {
+    background: white;
+    border: 1px solid var(--paper-dark);
+    border-radius: 12px;
+    padding: 28px 24px;
+  }
+
+  .deliv-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--orange-bg);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .deliv-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+  .deliv-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+
+  /* ── PREREQUISITES ── */
+  .prereq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 720px;
+  }
+
+  .prereq-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    background: white;
+    border: 1px solid var(--paper-dark);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+
+  .prereq-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    font-style: italic;
+    color: var(--orange);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 32px;
+  }
+
+  .prereq-content {}
+  .prereq-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .prereq-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+
+  .code-inline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--paper-dark);
+    padding: 2px 7px;
+    border-radius: 4px;
+    color: var(--orange);
+    font-weight: 600;
+  }
+
+  /* ── 9 PHASES ── */
+  .phases {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .phases::before {
+    content: '';
+    position: absolute;
+    left: 27px;
+    top: 28px;
+    bottom: 28px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--orange), transparent);
+    z-index: 0;
+  }
+
+  .phase {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--paper-dark);
+    position: relative;
+    z-index: 1;
+  }
+
+  .phase:last-child { border-bottom: none; }
+
+  .phase-num-wrap {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--paper-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--orange);
+  }
+
+  .phase.key .phase-num-wrap {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: white;
+  }
+
+  .phase-body { flex: 1; padding-top: 12px; }
+  .phase-title { font-weight: 700; font-size: 17px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+  .phase-badge { font-size: 10px; background: var(--orange); color: white; padding: 2px 8px; border-radius: 4px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .phase-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.7; margin-bottom: 12px; }
+
+  .phase-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .phase-rule {
+    font-size: 13px;
+    color: var(--ink-soft);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .phase-rule::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--orange);
+    font-size: 12px;
+  }
+
+  .phase-artifact {
+    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--orange);
+    background: var(--orange-bg);
+    padding: 6px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── TRIGGER ── */
+  .trigger-box {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 16px;
+    padding: 40px 48px;
+    max-width: 800px;
+  }
+
+  .trigger-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(245,240,232,0.45);
+    margin-bottom: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+  }
+
+  .trigger-phrase {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-style: italic;
+    color: var(--paper);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .trigger-phrase em { color: var(--orange); }
+
+  .trigger-sub {
+    font-size: 14px;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  .trigger-code {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(245,240,232,0.12);
+    border-radius: 8px;
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: rgba(245,240,232,0.8);
+    line-height: 1.8;
+    white-space: pre-wrap;
+    position: relative;
+  }
+
+  .trigger-copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,107,0,0.2);
+    border: none;
+    color: var(--orange);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background 0.15s;
+  }
+  .trigger-copy-btn:hover { background: rgba(255,107,0,0.35); }
+
+  /* ── OUTPUT TABLE ── */
+  .output-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .output-table th {
+    text-align: left;
+    padding: 12px 16px;
+    background: var(--ink);
+    color: rgba(245,240,232,0.6);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .output-table th:first-child { border-radius: 8px 0 0 0; }
+  .output-table th:last-child { border-radius: 0 8px 0 0; }
+
+  .output-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--paper-dark);
+    vertical-align: top;
+    color: var(--ink);
+  }
+
+  .output-table tr:last-child td { border-bottom: none; }
+  .output-table tr:nth-child(even) td { background: rgba(255,255,255,0.5); }
+
+  .file-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--orange);
+    background: var(--orange-bg);
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* ── MISTAKES ── */
+  .mistake-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 640px) {
+    .mistake-grid { grid-template-columns: 1fr; }
+    .hero-cta-row { flex-direction: column; align-items: flex-start; }
+  }
+
+  .mistake-card {
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+
+  .mistake-bad {
+    background: #FFF1F0;
+    border: 1px solid #FECDCA;
+  }
+
+  .mistake-fix {
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+  }
+
+  .mistake-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .mistake-bad .mistake-tag { color: #B91C1C; }
+  .mistake-fix .mistake-tag { color: #15803D; }
+
+  .mistake-text { font-size: 14px; line-height: 1.6; }
+  .mistake-bad .mistake-text { color: #991B1B; }
+  .mistake-fix .mistake-text { color: #166534; }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    background: var(--ink);
+    color: rgba(245,240,232,0.5);
+    padding: 40px clamp(20px, 4vw, 60px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 13px;
+  }
+
+  .footer-brand {
+    font-family: 'Instrument Serif', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--paper);
+  }
+
+  .footer-brand em { color: var(--orange); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge">🧠 Claude Code Skill</div>
+    <div class="hero-eyebrow">competitive-intel-to-html · v2.0 · 9 фаз</div>
+    <h1 class="hero-title">От ключевого слова<br>до <em>конверсионного сайта</em><br>и клиентского отчёта</h1>
+    <p class="hero-sub">
+      AI-методология разведки рынка: SERP → конкуренты → боли покупателей →
+      структура сайта → wireframe → тексты → HTML-отчёт для клиента.
+      Весь цикл — один скилл, один агент, ~20 минут.
+    </p>
+    <div class="hero-cta-row">
+      <a href="#phases" class="btn-primary">Смотреть 9 фаз →</a>
+      <a href="demo.html" class="btn-ghost">Открыть демо-отчёт</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">9</div>
+      <div class="stat-label">фаз пайплайна</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">~21</div>
+      <div class="stat-label">минут на нишу</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">86</div>
+      <div class="stat-label">tool-calls агента</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">9</div>
+      <div class="stat-label">готовых артефактов</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- WHAT YOU GET -->
+<section class="section-wrap">
+  <div class="container">
+    <div class="section-label">Что вы получаете</div>
+    <h2 class="section-heading">Не просто анализ.<br><em>Готовые входные данные для сайта</em></h2>
+    <p class="section-body">
+      Скилл не останавливается на «конкурентных инсайтах». Его работа закончена, только когда
+      у дизайнера и разработчика есть всё, чтобы собрать сайт без угадывания.
+    </p>
+
+    <div class="deliverables">
+      <div class="deliv-card">
+        <div class="deliv-icon">📊</div>
+        <div class="deliv-title">HTML-отчёт для клиента</div>
+        <div class="deliv-desc">Self-contained файл — открывается в браузере без сервера. Продаёт стратегию, не пересказывает данные.</div>
+      </div>
+      <div class="deliv-card">
+        <div class="deliv-icon">🏗️</div>
+        <div class="deliv-title">Структура сайта</div>
+        <div class="deliv-desc">Каждая секция = задача покупателя. Порядок секций = воронка решения. Не вкусовщина — доказанная болями структура.</div>
+      </div>
+      <div class="deliv-card">
+        <div class="deliv-icon">🖼️</div>
+        <div class="deliv-title">Wireframe с UI-паттернами</div>
+        <div class="deliv-desc">Каждая секция × 4 атрибута: функция / боль / бенчмарк / конкретный UI-элемент. Drag-slider, marquee, sticky gallery — не абстракции.</div>
+      </div>
+      <div class="deliv-card">
+        <div class="deliv-icon">✍️</div>
+        <div class="deliv-title">Тексты на языке покупателя</div>
+        <div class="deliv-desc">Дословные цитаты из отзывов → копирайт. Каждый claim = цифра или сравнение. Нет флаффа.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- PREREQUISITES -->
+<section class="section-wrap" style="background: white;">
+  <div class="container">
+    <div class="section-label">Что нужно перед запуском</div>
+    <h2 class="section-heading">Три шага <em>настройки</em></h2>
+    <p class="section-body">
+      Скилл требует Claude Code с Firecrawl MCP и установленного плагина pain-driven-research.
+      Один раз настроил — запускаешь для любой ниши.
+    </p>
+
+    <div class="prereq-list">
+      <div class="prereq-item">
+        <div class="prereq-num">1</div>
+        <div class="prereq-content">
+          <div class="prereq-title">Установи Claude Code + Firecrawl MCP</div>
+          <div class="prereq-desc">
+            Claude Code (CLI): <span class="code-inline">npm install -g @anthropic-ai/claude-code</span><br>
+            Firecrawl MCP для скрейпинга: добавь в <span class="code-inline">~/.claude/settings.json</span> под ключом <span class="code-inline">mcpServers</span>.
+            Нужен API-ключ Firecrawl — получи на <strong>firecrawl.dev</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div class="prereq-item">
+        <div class="prereq-num">2</div>
+        <div class="prereq-content">
+          <div class="prereq-title">Установи скилл competitive-intel-to-html</div>
+          <div class="prereq-desc">
+            Положи файл <span class="code-inline">SKILL.md</span> в папку <span class="code-inline">~/.claude/skills/competitive-intel-to-html/</span>.
+            При следующем запуске Claude Code скилл появится в реестре автоматически.<br><br>
+            Также нужен субскилл <span class="code-inline">pain-driven-research</span> в <span class="code-inline">~/.claude/skills/pain-driven-research/</span>.
+          </div>
+        </div>
+      </div>
+
+      <div class="prereq-item">
+        <div class="prereq-num">3</div>
+        <div class="prereq-content">
+          <div class="prereq-title">Подготовь входные данные для своей ниши</div>
+          <div class="prereq-desc">
+            Минимум: <strong>ключевое слово ниши</strong> + <strong>гео</strong> (город или «РФ»).<br>
+            Опционально: URL бренда клиента, дизайн-токены (#HEX акцента, шрифты), путь к утверждённому копирайту клиента.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 9 PHASES -->
+<section class="section-wrap" id="phases">
+  <div class="container">
+    <div class="section-label">Пошаговый процесс</div>
+    <h2 class="section-heading">9 фаз: от запроса<br>до <em>готового пакета</em></h2>
+    <p class="section-body">
+      Каждая фаза производит один артефакт. Артефакты связаны по цепочке — каждый следующий
+      строится на предыдущем. Не прыгай через фазы.
+    </p>
+
+    <div class="phases">
+
+      <div class="phase">
+        <div class="phase-num-wrap">01</div>
+        <div class="phase-body">
+          <div class="phase-title">SERP Discovery — найти реальное конкурентное поле</div>
+          <p class="phase-desc">Никогда не угадывай конкурентов. Используй Firecrawl search по 3-5 коммерческим запросам и ранжируй домены по частоте появления.</p>
+          <div class="phase-rules">
+            <div class="phase-rule">Запросы: «купить {ниша} {город}», «{ниша} цена», «{ниша} отзывы», «{ниша} производитель», «{ниша} оптом» (для B2B)</div>
+            <div class="phase-rule">Сохрани: domain, appearances (сколько раз встретился), intent_bucket, serp_rank, type (producer/dealer)</div>
+            <div class="phase-rule">Выбери топ-5–7 доменов для глубокого анализа</div>
+          </div>
+          <div class="phase-artifact">📄 01-serp.json</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num-wrap">02</div>
+        <div class="phase-body">
+          <div class="phase-title">Scrape сайтов — зафиксировать что и как говорит каждый конкурент</div>
+          <p class="phase-desc">Firecrawl scrape каждого домена из топа. Один файл на домен — никаких комбинированных отчётов.</p>
+          <div class="phase-rules">
+            <div class="phase-rule">Записывай: H1, hero copy, CTA текст, видимость цены или «по запросу»</div>
+            <div class="phase-rule">Фиксируй trust-элементы: сертификаты, лет на рынке, количество отзывов, фото производства</div>
+            <div class="phase-rule">Визуальный стиль: цвет акцента (hex), типографика, плотность, ощущение на мобильном</div>
+            <div class="phase-rule">Маркетплейсы не конкуренты — только визуальные референсы, не стратегические якоря</div>
+          </div>
+          <div class="phase-artifact">📁 02-sites/&lt;domain&gt;.md</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num-wrap">03</div>
+        <div class="phase-body">
+          <div class="phase-title">Отзывы дословно — язык покупателя = язык сайта</div>
+          <p class="phase-desc">Иди туда, где реальные покупатели жалуются и хвалят: 2GIS, Отзовик, Я.Маркет, ИРекомендую, Форумхаус, Мастерград.</p>
+          <div class="phase-rules">
+            <div class="phase-rule">Минимум 15 дословных цитат — без пересказа своими словами</div>
+            <div class="phase-rule">Для каждой цитаты: категория боли, source URL, автор/дата (если публичны)</div>
+            <div class="phase-rule">Категории болей: качество, цена, доставка, страх контрафакта, монтаж, хранение</div>
+            <div class="phase-rule">Слова покупателей идут прямо в тексты сайта — не адаптируй их «под бренд»</div>
+          </div>
+          <div class="phase-artifact">📁 03-reviews/&lt;source&gt;.md</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num-wrap">04</div>
+        <div class="phase-body">
+          <div class="phase-title">Скоринг 8×10 — установить кто лидер и почему</div>
+          <p class="phase-desc">Оцени каждого конкурента по 8 критериям от 1 до 10. Максимум 80 баллов. Это таблица, от которой считается «сколько сайт должен набрать».</p>
+          <div class="phase-rules">
+            <div class="phase-rule">Критерии: видимость в поиске / качество отзывов / дизайн / мобайл / глубина контента / social proof / CTA / скорость</div>
+            <div class="phase-rule">Определи лидера (кто задаёт планку) и слабейшего (кто показывает пол ниши)</div>
+            <div class="phase-rule">Выдели паттерны топ-10%: что делают лидеры, чего не делают аутсайдеры</div>
+            <div class="phase-rule">Сюда ставь потенциальный скор клиента с комментарием «что нужно для него»</div>
+          </div>
+          <div class="phase-artifact">📄 04-scoring.md</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num-wrap">05</div>
+        <div class="phase-body">
+          <div class="phase-title">GAP-анализ — 7 бакетов без домыслов</div>
+          <p class="phase-desc">Где конкуренты не закрывают боли покупателей — там деньги. Используй 7-бакетный фреймворк. Правило: ни один GAP без доказательства.</p>
+          <div class="phase-rules">
+            <div class="phase-rule"><strong>Насыщение</strong> — что делают 3+ конкурентов (must-have, но не дифференциатор)</div>
+            <div class="phase-rule"><strong>Пробелы</strong> — боли, которые никто не закрывает (золото для дифференциации)</div>
+            <div class="phase-rule"><strong>Визуальные GAP'ы</strong> — UI-паттерны, которых нет ни у кого</div>
+            <div class="phase-rule"><strong>Copy GAP'ы</strong> — словарь из отзывов, которого нет в чьём-либо копирайте</div>
+            <div class="phase-rule"><strong>Trust GAP'ы</strong> — доказательства, которых хочет покупатель, но никто не показывает</div>
+            <div class="phase-rule"><strong>Ценовые GAP'ы</strong> — прозрачность цены</div>
+            <div class="phase-rule"><strong>Мобильные GAP'ы</strong> — что никто не оптимизирует на мобильном</div>
+          </div>
+          <div class="phase-artifact">📄 05-gap-analysis.md</div>
+        </div>
+      </div>
+
+      <div class="phase key">
+        <div class="phase-num-wrap">06</div>
+        <div class="phase-body">
+          <div class="phase-title">
+            Стратегия структуры сайта — мост между исследованием и реализацией
+            <span class="phase-badge">Ключевая фаза</span>
+          </div>
+          <p class="phase-desc">
+            Эта фаза обязательна. Без неё wireframe — угадайка, а не стратегия.
+            Цель: определить сайт как воронку решения покупателя, а не набор блоков.
+          </p>
+          <div class="phase-rules">
+            <div class="phase-rule">Для каждой секции заполни 6 полей: <strong>секция / задача покупателя / боль или возражение / доказательство / почему здесь / роль в конверсии</strong></div>
+            <div class="phase-rule">Роли: attention → trust → education → proof → action</div>
+            <div class="phase-rule">Рекомендованная последовательность: Hero → Быстрый trust → Признание боли → Механизм → Сравнение → Доказательная стена → Доставка/условия → FAQ → Final CTA</div>
+            <div class="phase-rule">Если нужно: гибрид маркетплейс-карточка сверху (ясность продукта) + лендинг снизу (убеждение)</div>
+            <div class="phase-rule">Wireframe не изобретает секции — он визуализирует уже одобренную структуру из этого файла</div>
+          </div>
+          <div class="phase-artifact">📄 06-site-structure.md</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num-wrap">07</div>
+        <div class="phase-body">
+          <div class="phase-title">Wireframe — боль × UI-паттерн</div>
+          <p class="phase-desc">Переводит одобренную структуру в конкретные UI-решения. Не абстракции — конкретные паттерны с визуальным бенчмарком.</p>
+          <div class="phase-rules">
+            <div class="phase-rule">Каждая секция × 4 атрибута: <strong>Функция / Боль (цитата) / Визуальный бенчмарк / Визуальное решение</strong></div>
+            <div class="phase-rule">Бенчмарк: лучший конкурент ИЛИ «GAP — никто не делает»</div>
+            <div class="phase-rule">Визуальное решение: sticky gallery, drag-compare slider, marquee, specs table, proof wall — не «красивая карточка»</div>
+          </div>
+          <div class="phase-artifact">📄 07-wireframe.md</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num-wrap">08</div>
+        <div class="phase-body">
+          <div class="phase-title">Тексты — только язык покупателя, только с доказательствами</div>
+          <p class="phase-desc">Пишем только для секций, у которых ещё нет утверждённого текста клиента. Язык берём из 03-reviews/.</p>
+          <div class="phase-rules">
+            <div class="phase-rule">Использовать реальный словарь покупателей из отзывов</div>
+            <div class="phase-rule">Называть конкретный механизм: «аминные отвердители», а не «специальная защита»</div>
+            <div class="phase-rule">Запрещены флафф-прилагательные без числа: «прочный», «качественный», «надёжный» сами по себе</div>
+            <div class="phase-rule">Каждый сильный claim = число или сравнение с конкурентом</div>
+            <div class="phase-rule">Для каждой секции: заголовок + поддержка + proof bullets + CTA (если есть)</div>
+          </div>
+          <div class="phase-artifact">📄 08-copy.md</div>
+        </div>
+      </div>
+
+      <div class="phase" style="border-bottom:none;">
+        <div class="phase-num-wrap" style="background:var(--orange);border-color:var(--orange);color:white;">09</div>
+        <div class="phase-body">
+          <div class="phase-title">HTML-отчёт — стратегия-продающий документ для клиента</div>
+          <p class="phase-desc">Self-contained HTML без JS-бандла. Открывается в браузере без сервера. Это не дамп данных — это документ, который продаёт стратегию.</p>
+          <div class="phase-rules">
+            <div class="phase-rule">Обязательные секции: Executive Summary / Профили конкурентов / Сравнительная таблица / Боли дословно / Нишевая палитра / GAP-анализ / Структура сайта / Паттерны топ-10% / Методология</div>
+            <div class="phase-rule">Дизайн: бумажный фон #F5F0E8, тёмные заголовки Instrument Serif, акцент бренда клиента, grain overlay</div>
+            <div class="phase-rule">Cover page: тёмный фон + оранжевый radial glow + дата + счётчики источников</div>
+            <div class="phase-rule">Никакого внешнего JS — только Google Fonts @import</div>
+          </div>
+          <div class="phase-artifact">📄 09-competitive-report.html</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- TRIGGER -->
+<section class="section-wrap" style="background: white;">
+  <div class="container">
+    <div class="section-label">Как запустить</div>
+    <h2 class="section-heading">Одна фраза — <em>весь пайплайн</em></h2>
+    <p class="section-body">
+      Скажи агенту что хочешь и по какой нише. Claude Code определит скилл и запустит все 9 фаз.
+      Или используй готовый промпт ниже.
+    </p>
+
+    <div class="trigger-box">
+      <div class="trigger-label">// Фразы-триггеры</div>
+      <div class="trigger-phrase">«<em>Разведка рынка</em> по нише [ниша] в [город]»</div>
+      <div class="trigger-phrase">«Сделай <em>competitive research</em> для лендинга»</div>
+      <div class="trigger-phrase">«<em>Сайт по болям клиентов</em> — [ниша]»</div>
+      <div class="trigger-sub">Любая из этих фраз активирует скилл competitive-intel-to-html автоматически.</div>
+
+      <div class="trigger-label" style="margin-top:28px;">// Готовый промпт — скопируй и замени значения</div>
+      <div class="trigger-code" id="prompt-code">Запусти скилл competitive-intel-to-html для ниши:
+
+Ниша: [ВАША НИША, например «стеклопластиковая сетка»]
+Гео: [ГОРОД или «РФ»]
+Папка вывода: ./research/competitors/
+URL бренда клиента: [URL или «нет»]
+Акцентный цвет: [#HEX или «по нише»]
+
+Запускай фазы по порядку. После каждой — сохраняй артефакт.
+В конце собери HTML-отчёт.
+<button class="trigger-copy-btn" onclick="copyPrompt()">Скопировать</button></div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- OUTPUT TABLE -->
+<section class="section-wrap">
+  <div class="container">
+    <div class="section-label">Все артефакты</div>
+    <h2 class="section-heading">9 файлов — <em>полный пакет</em></h2>
+    <p class="section-body">Каждая фаза сохраняет один артефакт в папку вывода. В конце у тебя 9 файлов, которых достаточно для запуска разработки сайта.</p>
+
+    <table class="output-table">
+      <thead>
+        <tr>
+          <th>Файл</th>
+          <th>Что содержит</th>
+          <th>Кому нужен</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="file-tag">01-serp.json</span></td>
+          <td>Топ-7 конкурентов, ранжированных по частоте в SERP + intent bucket</td>
+          <td>Агент (вход для фаз 2-4)</td>
+        </tr>
+        <tr>
+          <td><span class="file-tag">02-sites/*.md</span></td>
+          <td>Разбор каждого конкурента: copy, цена, trust, визуал</td>
+          <td>Агент + дизайнер</td>
+        </tr>
+        <tr>
+          <td><span class="file-tag">03-reviews/*.md</span></td>
+          <td>15+ дословных цитат покупателей с source URL и категорией боли</td>
+          <td>Копирайтер + стратег</td>
+        </tr>
+        <tr>
+          <td><span class="file-tag">04-scoring.md</span></td>
+          <td>Матрица 8×10, лидер ниши, слабейший, паттерны топ-10%</td>
+          <td>Клиент + продакт</td>
+        </tr>
+        <tr>
+          <td><span class="file-tag">05-gap-analysis.md</span></td>
+          <td>7-бакетный GAP: что никто не делает + что у клиента есть для закрытия</td>
+          <td>Стратег + продакт</td>
+        </tr>
+        <tr>
+          <td><span class="file-tag">06-site-structure.md</span></td>
+          <td>Секции сайта × 6 полей: задача / боль / доказательство / порядок / роль</td>
+          <td>Дизайнер + разработчик</td>
+        </tr>
+        <tr>
+          <td><span class="file-tag">07-wireframe.md</span></td>
+          <td>Секции × 4 атрибута: функция / боль / бенчмарк / UI-паттерн</td>
+          <td>Дизайнер</td>
+        </tr>
+        <tr>
+          <td><span class="file-tag">08-copy.md</span></td>
+          <td>Тексты на языке покупателя для секций без утверждённого копирайта</td>
+          <td>Разработчик + клиент</td>
+        </tr>
+        <tr>
+          <td><span class="file-tag">09-report.html</span></td>
+          <td>Клиентский HTML-отчёт: вся стратегия в презентабельном виде</td>
+          <td>Клиент</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- MISTAKES -->
+<section class="section-wrap" style="background: white;">
+  <div class="container">
+    <div class="section-label">Типичные ошибки</div>
+    <h2 class="section-heading">Что идёт не так — <em>и как фиксить</em></h2>
+    <p class="section-body">Самые частые ошибки при первом запуске.</p>
+
+    <div class="mistake-grid">
+      <div class="mistake-card mistake-bad">
+        <div class="mistake-tag">❌ Ошибка</div>
+        <div class="mistake-text">Остановился на GAP-анализе, не дошёл до структуры сайта</div>
+      </div>
+      <div class="mistake-card mistake-fix">
+        <div class="mistake-tag">✓ Как надо</div>
+        <div class="mistake-text">Скилл готов только когда есть <code style="font-family:monospace;font-size:12px;">06-site-structure.md</code> — мост между исследованием и реализацией</div>
+      </div>
+
+      <div class="mistake-card mistake-bad">
+        <div class="mistake-tag">❌ Ошибка</div>
+        <div class="mistake-text">Пересказал отзывы покупателей своими словами «в стиле бренда»</div>
+      </div>
+      <div class="mistake-card mistake-fix">
+        <div class="mistake-tag">✓ Как надо</div>
+        <div class="mistake-text">Только дословные цитаты. Слова покупателя идут прямо в заголовки и буллеты сайта</div>
+      </div>
+
+      <div class="mistake-card mistake-bad">
+        <div class="mistake-tag">❌ Ошибка</div>
+        <div class="mistake-text">Прыгнул из GAP прямо в wireframe, пропустив фазу 06</div>
+      </div>
+      <div class="mistake-card mistake-fix">
+        <div class="mistake-tag">✓ Как надо</div>
+        <div class="mistake-text">Фаза 06 (site-structure) обязательна. Wireframe визуализирует одобренную структуру, не изобретает её</div>
+      </div>
+
+      <div class="mistake-card mistake-bad">
+        <div class="mistake-tag">❌ Ошибка</div>
+        <div class="mistake-text">HTML-отчёт — дамп данных со скучными таблицами</div>
+      </div>
+      <div class="mistake-card mistake-fix">
+        <div class="mistake-tag">✓ Как надо</div>
+        <div class="mistake-text">Отчёт — стратегия-продающий документ. Он должен убеждать клиента, не просто информировать</div>
+      </div>
+
+      <div class="mistake-card mistake-bad">
+        <div class="mistake-tag">❌ Ошибка</div>
+        <div class="mistake-text">GAP без доказательства («кажется, никто не делает X»)</div>
+      </div>
+      <div class="mistake-card mistake-fix">
+        <div class="mistake-tag">✓ Как надо</div>
+        <div class="mistake-text">Каждый GAP = цитата из отзыва ИЛИ наблюдение из фаз 2-3. Нет доказательства — нет GAP'а</div>
+      </div>
+
+      <div class="mistake-card mistake-bad">
+        <div class="mistake-tag">❌ Ошибка</div>
+        <div class="mistake-text">Угадал конкурентов вместо SERP-поиска («все знают что это arm-plast.ru»)</div>
+      </div>
+      <div class="mistake-card mistake-fix">
+        <div class="mistake-tag">✓ Как надо</div>
+        <div class="mistake-text">Всегда начинай с Firecrawl search. Реальный SERP часто удивляет — дилеры и агрегаторы бьют производителей</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- DEMO LINK -->
+<section class="section-wrap">
+  <div class="container" style="text-align:center;">
+    <div class="section-label" style="justify-content:center;display:flex;">Живой пример</div>
+    <h2 class="section-heading" style="margin:0 auto 20px;text-align:center;">Смотри как выглядит<br><em>финальный отчёт</em></h2>
+    <p class="section-body" style="margin:0 auto 40px;text-align:center;">
+      Реальный отчёт по нише стеклопластиковой сетки (Москва, 2026). 7 конкурентов, 6 источников отзывов, 21 мин работы агента.
+    </p>
+    <a href="demo.html" class="btn-primary" style="margin:0 auto;">Открыть демо-отчёт →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div>
+    <div class="footer-brand"><em>competitive-intel-to-html</em></div>
+    <div style="font-size:12px;margin-top:4px;">Claude Code Skill · v2.0 · 9 фаз</div>
+  </div>
+  <div style="display:flex;gap:24px;font-size:12px;">
+    <span>Субскилл: pain-driven-research</span>
+    <span>·</span>
+    <span>Создан: май 2026</span>
+  </div>
+</footer>
+
+<script>
+function copyPrompt() {
+  const lines = document.getElementById('prompt-code').innerText
+    .replace('Скопировать','').trim();
+  navigator.clipboard.writeText(lines).then(() => {
+    const btn = document.querySelector('.trigger-copy-btn');
+    btn.textContent = 'Скопировано!';
+    setTimeout(() => btn.textContent = 'Скопировать', 2000);
+  });
+}
+</script>
+
+</body>
+</html>
